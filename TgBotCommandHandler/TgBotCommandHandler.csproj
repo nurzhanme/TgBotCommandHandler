@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<Authors>Nurzhan Aitbayev</Authors>
+		<Title>library that provides easy-to-use command handlers for Telegram bots commands from User</Title>
+		<Description>library that provides easy-to-use command handlers for Telegram bots commands from User</Description>
+		<PackageProjectUrl>https://github.com/nurzhanme/TgBotCommandHandler</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/nurzhanme/TgBotCommandHandler</RepositoryUrl>
+		<Copyright>Copyright © Nurzhan Aitbayev</Copyright>
+		<PackageTags>telegram;telegram.bot;command;handler;</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>0.1.0</Version>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Telegram.Bot" Version="18.0.0" />
+	</ItemGroup>
+
+</Project>
