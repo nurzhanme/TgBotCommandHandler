@@ -1,6 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace TgBotCommandHandler.Types;
 
@@ -47,7 +48,7 @@ public class CommandContext
     /// <param name="sendTyping">Show typing in chat</param>
     /// <param name="asReply">Send message as a reply to original message</param>
     /// <returns></returns>
-    public async Task RespondAsync(string text, bool sendTyping = false, bool asReply = false)
+    public async Task RespondAsync(string text, bool sendTyping = false, bool asReply = false, IReplyMarkup? replyMarkup = null)
     {
         int? messageId = null;
 
@@ -61,7 +62,7 @@ public class CommandContext
             messageId = MessageId;
         }
 
-        await BotClient.SendTextMessageAsync(ChatId, text, replyToMessageId: messageId);
+        await BotClient.SendTextMessageAsync(ChatId, text, replyToMessageId: messageId, replyMarkup: replyMarkup);
     }
 
 }

@@ -9,12 +9,32 @@ namespace TgBotCommandHandler.Extensions;
 
 public static class BotClientCommandHandler
 {
-    private static readonly Dictionary<string, (Type type, MethodInfo methodInfo)> handlersDictionary = new();
+    private static readonly Dictionary<string, (Type type, MethodInfo methodInfo, object[] paramArray)> handlersDictionary = new();
 
-    public static void RegisterCommand<T>(this ITelegramBotClient client) where T : CommandHandler
+    public static void RegisterCommand<T>(this ITelegramBotClient client, IServiceProvider sp = null) where T : CommandHandler
     {
-        var methods = typeof(T).GetMethods().Where(method =>
-                method.GetParameters()
+        List<object> list = new List<object>();
+
+        if (sp is not null)
+        {
+            var ctorParams = typeof(T).GetConstructors().FirstOrDefault(c => c.GetParameters().Length > 0).GetParameters();
+
+            if (ctorParams != null)
+            {
+                foreach (var parameter in ctorParams)
+                {
+                    var service = sp.GetService(parameter.ParameterType);
+
+                    list.Add(service);
+
+                }
+            }
+        }
+        
+
+        var methods = typeof(T)
+            .GetMethods()
+            .Where(method => method.GetParameters()
                     .Length == 1
                 && CommandHandlerUtils.IsSameOrSubclass(method.GetParameters()[0].ParameterType,
                     typeof(CommandContext))
@@ -41,7 +61,7 @@ public static class BotClientCommandHandler
                 continue;
             }
 
-            handlersDictionary.Add(key, (typeof(T), method));
+            handlersDictionary.Add(key, (typeof(T), method, list.ToArray()));
         }
     }
 
@@ -63,7 +83,7 @@ public static class BotClientCommandHandler
         }
 
         var val = handlersDictionary[command];
-        var commandHandler = (CommandHandler)Activator.CreateInstance(val.type);
+        var commandHandler = (CommandHandler)Activator.CreateInstance(val.type, val.paramArray);
 
 
         var helper = new CommandContext(message, client);
