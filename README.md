@@ -31,7 +31,7 @@ var botClient = new TelegramBotClient("YOUR_BOT_TOKEN");
 botClient.RegisterCommand<MyCommandHandler>();
 botClient.InitializeCommands(commandHandler);
 
-botClient..StartReceiving(updateHandler: HandleUpdateAsync,
+botClient.StartReceiving(updateHandler: HandleUpdateAsync,
                 pollingErrorHandler: HandlePollingErrorAsync,
                 receiverOptions: receiverOptions,
                 cancellationToken: cancellationToken);
